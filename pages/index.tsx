@@ -1,13 +1,13 @@
 import axios from 'axios'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import PokemonCard from '@/components/cards/PokemonCard'
+import styles from "../styles/Home.module.css"
 
 
 interface Pokemon {
   name: string,
   url: string
 }
-const OFFSET = 40
 
 export default function Home() {
 
@@ -49,8 +49,10 @@ const {
 
   return (
     <>
+    <section className={styles.home}>
+      <div className={styles.listbox}>
       {data?.pages.map((page, index)=>(
-        <div key={index}>
+        <div key={index} className={styles.list}>
           {page.results.map((pokemon:Pokemon)=>{
                  const { name, url } = pokemon
                  const id = url.split("/")[6]
@@ -59,10 +61,13 @@ const {
         </div>
       ) 
       )}
-      <button onClick={()=> fetchNextPage()} disabled={!hasNextPage || isFetchingNextPage}>다음페이지</button>
+      </div>
+      
           
       
 
+    </section>
+    <button onClick={()=> fetchNextPage()} disabled={!hasNextPage || isFetchingNextPage}>다음페이지</button>
     </>
   )
 }
