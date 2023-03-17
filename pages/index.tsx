@@ -1,43 +1,50 @@
 import axios from 'axios'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import PokemonCard from '@/components/cards/PokemonCard'
-import { useEffect } from 'react'
+
 
 interface Pokemon {
   name: string,
   url: string
 }
-
+const OFFSET = 40
 
 export default function Home() {
-  
-  const getAllPokemon = async ({pageParams=0}) => {
-    console.log("pageParams",pageParams)
+
+  const getAllPokemon = async ({pageParam=0}) => {
+    console.log("pageParams",pageParam)
   return await axios.get("https://pokeapi.co/api/v2/pokemon", {
     params: {
       limit: 30,
-      offset: pageParams
+      offset: pageParam
     }
   })
   .then((res)=>res.data)
   }
 
-  const getPokemonCharacteristics = async (id: number) => {
-    return await axios.get(`https://pokeapi.co/api/v2/characteristic/${id}`)
-  } 
+ 
 
 
-
-const {data, fetchNextPage, hasNextPage} = useInfiniteQuery(["InfinitePokemon"], getAllPokemon, {
+const {    
+  data,
+  error,
+  fetchNextPage,
+  hasNextPage,
+  isFetching,
+  isFetchingNextPage,
+  status,} = useInfiniteQuery(["InfinitePokemon"], getAllPokemon, {
   //무한스크롤의 핵심이다. getNextPageParam 메서드가 falsy한 값을 반환하면 추가 fetch 실행하지 않음
   //falsy하지 않은 값을 return 할 경우 Number를 리턴해야함 fetch calback의 인자로 자동으로 PageParam을 전달
-  getNextPageParam: (lastPage, allPages) => {
+  getNextPageParam: (lastPage) => {
     console.log("lastPage", lastPage)
     const nextpage = lastPage.next;
     if(!nextpage) return false;
-   return  Number(new URL(nextpage).searchParams.get("offset")) 
+    
+    return  Number(new URL(nextpage).searchParams.get("offset"));
   }
 })
+
+
 
 
   return (
@@ -52,7 +59,7 @@ const {data, fetchNextPage, hasNextPage} = useInfiniteQuery(["InfinitePokemon"],
         </div>
       ) 
       )}
-      <button onClick={()=> fetchNextPage()}>다음페이지</button>
+      <button onClick={()=> fetchNextPage()} disabled={!hasNextPage || isFetchingNextPage}>다음페이지</button>
           
       
 

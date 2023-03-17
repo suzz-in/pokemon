@@ -4,7 +4,6 @@ import styles from "../../styles/Detail.module.css"
 import Image from "next/image";
 
 function detail ({data,id}) {
-  console.log(data)
 
   const getPokemonCharacteristics = async (id: number) => {
     return await axios.get(`https://pokeapi.co/api/v2/characteristic/${id}`).then((res)=>res.data.descriptions[1])
@@ -15,13 +14,13 @@ function detail ({data,id}) {
   const {data: getCharcter} = useQuery(["character", +id], ()=>getPokemonCharacteristics(+id))
   const {data: ability} = useQuery(["ability", id], ()=>getPokemonAbility(+id))
 
-  console.log("ability", ability)
+
   
 
 
 
     return (<div className={styles.detailcontainer}>
-        <Image src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${+id}.png`} width={150} height={150}/>
+        <Image src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${+id}.png`} alt={data.name} width={150} height={150}/>
         <div className={styles.Infobox}>
             <p className={styles.Info}>이름</p>
             <p className={styles.Info_detail}>{data.name}</p>
