@@ -3,7 +3,7 @@ import axios from "axios";
 import styles from "../../styles/Detail.module.css"
 import Image from "next/image";
 
-function detail ({data,id}) {
+function Detail ({data,id}) {
 
   const getPokemonCharacteristics = async (id: number) => {
     return await axios.get(`https://pokeapi.co/api/v2/characteristic/${id}`).then((res)=>res.data.descriptions[1])
@@ -36,7 +36,7 @@ function detail ({data,id}) {
     </div>)
 }
 
-export default detail;
+export default Detail;
 
 
     export const getServerSideProps = async (context) => {
