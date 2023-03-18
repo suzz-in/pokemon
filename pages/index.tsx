@@ -13,7 +13,7 @@ interface Pokemon {
 
 export default function Home() {
 
-  const endLine = useRef(null)
+  const endLine = useRef<any | null>(null)
 
   const getAllPokemon = async ({pageParam=0}) => {
   return await axios.get("https://pokeapi.co/api/v2/pokemon", {
@@ -57,9 +57,9 @@ useIntersectionObserver({
 
 
   return (
-    <>
-    <section className={styles.home}>
-      <div className={styles.listbox}>
+    <div className={styles.sectionwrap}>
+    <section>
+      <div>
       {data?.pages.map((page, index)=>(
         <div key={index} className={styles.list}>
           {page.results.map((pokemon:Pokemon)=>{
@@ -71,12 +71,9 @@ useIntersectionObserver({
       ) 
       )}
       </div>
-      
-          
-      
-
     </section>
     <div ref={endLine}/>
-    </>
+    {isFetchingNextPage && <p>데이터 로드 중..</p>}
+    </div>
   )
 }

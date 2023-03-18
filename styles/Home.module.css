@@ -1,22 +1,14 @@
-.home {
-  margin:auto;
-  padding: 0 auto;
-  width: 1200px;
-  height: auto;
-  display: flex;
-  
+.sectionwrap {
+  	width: 900px;
+	margin: 0 auto;
+	padding: 1rem 0;
 }
 
-.listbox {
-  margin: 0 auto 0 auto;
-}
 
 .list {
-  
-  margin-left: 10rem;
-  display: flex;
+	display: flex;
 	flex-wrap: wrap;
-  gap: 1rem;
-  height: auto;
-
+	gap: 1rem;
+	margin-bottom: 1rem;
 }
+

@@ -2,47 +2,55 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import styles from "../../styles/Detail.module.css"
 import Image from "next/image";
-
-function Detail ({data,id}) {
-
-  const getPokemonCharacteristics = async (id: number) => {
-    return await axios.get(`https://pokeapi.co/api/v2/characteristic/${id}`).then((res)=>res.data.descriptions[1])
-  } 
-  const getPokemonAbility = async (id: number) => {
-    return await axios.get(`https://pokeapi.co/api/v2/ability/${id}/`).then((res)=>res.data)
-  }
-  const {data: getCharcter} = useQuery(["character", +id], ()=>getPokemonCharacteristics(+id))
-  const {data: ability} = useQuery(["ability", id], ()=>getPokemonAbility(+id))
+import { GetServerSideProps } from 'next'
+import { useEffect } from "react";
 
 
-  
+function Detail ({Id, data}) {
+    console.log(data)
+
+    const {sprites,name, order, height,weight, abilities} = data
+
+
 
 
 
     return (<div className={styles.detailcontainer}>
-        <Image src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${+id}.png`} alt={data.name} width={150} height={150}/>
+        <Image src={sprites.front_default} alt={name} width={150} height={150}/>
+        <Image src={sprites.back_default} alt={name} width={150} height={150}/>
+        <p  className={styles.Info_num}>No. {order}</p>
         <div className={styles.Infobox}>
             <p className={styles.Info}>이름</p>
-            <p className={styles.Info_detail}>{data.name}</p>
+            <p className={styles.Info_detail}>{name}</p>
         </div>
         <div className={styles.Infobox}>
-            <p className={styles.Info}>특성</p>
-            <p  className={styles.Info_detail}>{getCharcter?.description}</p>
+            <p className={styles.Info}>키</p>
+            <p className={styles.Info_detail}>{height * 10}cm</p>
         </div>
-        <div>
+        <div className={styles.Infobox}>
+        <p className={styles.Info}>몸무게</p>
+        <p className={styles.Info_detail}>{weight / 10}kg</p>
+        </div>
+        <div className={styles.Infobox}>
             <p className={styles.Info}>능력</p>
-            <p  className={styles.Info_detail}>{ability?.effect_entries[1].effect}</p>
+            {abilities.map((data, index)=>(
+                    <span  key={data.slot}>
+                    {data.ability.name}
+                    {abilities?.length !== index + 1 ? ", " : ""}
+                </span>
+            ))}
         </div>
+
     </div>)
 }
 
 export default Detail;
 
 
-    export const getServerSideProps = async (context) => {
+    export const getServerSideProps: GetServerSideProps = async (context) => {
         const { query } = context;
-        const { id } = query;
-        const { data } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`)
+        const { Id } = query;
+        const { data } = await axios.get(`https://pokeapi.co/api/v2/pokemon/${Id}`)
     
-        return { props: { data,id } }
+        return { props: {Id, data} }
     }
