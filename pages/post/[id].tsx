@@ -5,14 +5,18 @@ import Image from "next/image";
 import { GetServerSideProps } from 'next'
 import { useEffect } from "react";
 
+interface Data {
+    sprites : {},
+    name : string,
+    order: number,
+    height : number,
+    weight: number,
+    abilities : []
+}
 
-function Detail ({Id, data}) {
-    console.log(data)
+function Detail ({data}: any) {
 
     const {sprites,name, order, height,weight, abilities} = data
-
-
-
 
 
     return (<div className={styles.detailcontainer}>
@@ -33,7 +37,7 @@ function Detail ({Id, data}) {
         </div>
         <div className={styles.Infobox}>
             <p className={styles.Info}>능력</p>
-            {abilities.map((data, index)=>(
+            {abilities.map((data: any, index: number)=>(
                     <span  key={data.slot}>
                     {data.ability.name}
                     {abilities?.length !== index + 1 ? ", " : ""}
