@@ -1,22 +1,26 @@
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import styles from "../../styles/Detail.module.css"
 import Image from "next/image";
 import { GetServerSideProps } from 'next'
-import { useEffect } from "react";
 
 interface Data {
-    sprites : {},
-    name : string,
-    order: number,
-    height : number,
-    weight: number,
-    abilities : []
+    data:{
+        sprites : {
+            front_default: string,
+            back_default: string
+        },
+        name : string,
+        order: number,
+        height : number,
+        weight: number,
+        abilities : []
+    }
+
 }
 
-function Detail ({data}: any) {
+function Detail ({data}:Data) {
 
-    const {sprites,name, order, height,weight, abilities} = data
+    const {sprites,name, order, height,weight, abilities} = data;
 
 
     return (<div className={styles.detailcontainer}>
