@@ -13,7 +13,6 @@ interface Pokemon {
 
 export default function Home() {
 
-  const endLine = useRef<any | null>(null)
 
   const getAllPokemon = async ({pageParam=0}) => {
   return await axios.get("https://pokeapi.co/api/v2/pokemon", {
@@ -45,6 +44,7 @@ const {
     return  Number(new URL(nextpage).searchParams.get("offset"));
   }
 })
+
 
 const {setTarget} = useIntersectionObserver({onIntersect: fetchNextPage})
 
