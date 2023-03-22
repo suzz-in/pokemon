@@ -24,8 +24,8 @@ export default function Home() {
   })
   .then((res)=>res.data)
   }
+  
 
- 
 
 
 const {    
@@ -46,14 +46,10 @@ const {
   }
 })
 
+const {setTarget} = useIntersectionObserver({onIntersect: fetchNextPage})
 
 
-useIntersectionObserver({
-  root: null,
-  target: endLine,
-  onIntersect: fetchNextPage,
-  enabled: hasNextPage,
-})
+
 
 
   return (
@@ -72,7 +68,7 @@ useIntersectionObserver({
       )}
       </div>
     </section>
-    <div ref={endLine}/>
+    <div ref={setTarget}/>
     {isFetchingNextPage && <p>데이터 로드 중..</p>}
     </div>
   )

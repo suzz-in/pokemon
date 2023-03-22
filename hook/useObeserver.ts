@@ -1,48 +1,35 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 interface useIntersectionObserverProps {
   root?: null;
   rootMargin?: string;
   threshold?: number;
-  target: any;
-  onIntersect:any;
+  target: React.ReactHTML;
+  onIntersect: IntersectionObserverCallback;
   enabled: boolean | undefined;
 }
 
-export default function useIntersectionObserver({
+const  useIntersectionObserver=({
     root,
-    target,
     onIntersect,
     threshold = 1.0,
     rootMargin = '0px',
     enabled = true,
-  }: useIntersectionObserverProps) {
+  }: useIntersectionObserverProps)=> {
+
+    const [target, setTarget] = useState<HTMLElement | null | undefined>(null);
+
     useEffect(() => {
-      if (!target) {
-        return;
-      }
+
+      if (!target) return;
   
-      const observer = new IntersectionObserver(
-        entries =>
-          entries.forEach(entry => entry.isIntersecting && onIntersect()),
-        {
-          root: root,
-          rootMargin,
-          threshold,
-        }
-      )
-  
-      const el = target && target.current
-  
-      if (!el) {
-        return
-      }
-  
-      observer.observe(el)
-  
-      return () => {
-        observer.unobserve(el)
-      }
+      const observer = new IntersectionObserver( onIntersect, {root, rootMargin, threshold})
+
+      observer.observe(target);
+      return ()=> observer.unobserve(target);
     }, [target, enabled, root, threshold, rootMargin, onIntersect])
+
+    return {setTarget}
   }
-  
+
+  export default useIntersectionObserver;
