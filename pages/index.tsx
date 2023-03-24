@@ -46,7 +46,13 @@ const {
 })
 
 
-const {setTarget} = useIntersectionObserver({onIntersect: fetchNextPage})
+
+const onIntersect: IntersectionObserverCallback = ([{ isIntersecting }]) => {
+  fetchNextPage();
+};
+const { setTarget } = useIntersectionObserver({ onIntersect });
+
+// const {setTarget} = useIntersectionObserver({onIntersect: fetchNextPage})
 
 
 
